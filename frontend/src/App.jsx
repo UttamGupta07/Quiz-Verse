@@ -5,6 +5,8 @@
 import Userlayout from './layout/Userlayout.jsx'
 import Login from "./pages/Login.jsx";
 import Signup from './pages/Signup.jsx'
+import About from './pages/About.jsx'
+
  
  const App = () => {
    return (
@@ -15,7 +17,7 @@ import Signup from './pages/Signup.jsx'
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
 
-
+<Route path="/about" element={<About />} />
 
          </Route>
 
