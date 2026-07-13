@@ -1,11 +1,13 @@
  import { NavLink, Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { token, logout } = useAuth();
 
-  const isLoggedIn = false; // Replace with your auth state
+  const isLoggedIn = token; // Replace with your auth state
 
   const navItem = ({ isActive }) =>
     `font-medium transition ${
@@ -61,12 +63,22 @@ const Navbar = () => {
                 alt="Profile"
                 className="w-10 h-10 rounded-full border"
               />
+               <Link
+                to="/login"
+                className="font-medium text-gray-700 hover:text-indigo-600"
+                onClick={()=>{logout()}}
+                
+                
+              >
+                Logout
+              </Link>
             </>
           ) : (
             <>
               <Link
                 to="/login"
                 className="font-medium text-gray-700 hover:text-indigo-600"
+                
               >
                 Login
               </Link>

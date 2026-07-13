@@ -1,24 +1,53 @@
  import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner";
 
 const Categories = () => {
-    const navigate = useNavigate();
+    
   const [categories, setCategories] = useState([]);
+     const navigate = useNavigate();
 
   const getCategories = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+       toast.error("Please login to continue.");
+
+  setTimeout(() => {
+    navigate("/login");
+  }, 2000);
+
+  return;
+    }
+
     try {
-      const url = "http://localhost:3030/quiz/categories";
-      const res = await axios.get(url);
+      const res = await axios.get(
+        "http://localhost:3030/quiz/categories",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setCategories(res.data);
     } catch (error) {
       console.log(error);
+
+      // Token is invalid or expired
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
     }
   };
 
   useEffect(() => {
     getCategories();
   }, []);
+
+
 
   return (
     <div className="min-h-screen bg-slate-900 px-6 py-12">

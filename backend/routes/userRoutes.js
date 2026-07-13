@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const { verifyUser } = require("../middleware/authMiddleware");
+const QuizAttempt=require("../models/QuestionAttempt");
 
 
 // USER SIGNUP
@@ -164,5 +165,52 @@ router.get("/user/profile", verifyUser, async (req, res) => {
     }
 
 });
+router.get("/user/dashboard", verifyUser,async (req, res) => {
+  try {
+    const attempts = await QuizAttempt.find({
+      userId: req.user.id,
+    }).sort({ createdAt: -1 });
+
+    const totalQuizzes = attempts.length;
+
+    let highestScore = 0;
+    let totalPercentage = 0;
+    let totalCorrect = 0;
+    let totalQuestions = 0;
+
+    attempts.forEach((quiz) => {
+      if (quiz.percentage > highestScore) {
+        highestScore = quiz.percentage;
+      }
+
+      totalPercentage += quiz.percentage;
+      totalCorrect += quiz.correctAnswers;
+      totalQuestions += quiz.totalQuestions;
+    });
+
+    const averageScore =
+      totalQuizzes === 0
+        ? 0
+        : (totalPercentage / totalQuizzes).toFixed(2);
+
+    const accuracy =
+      totalQuestions === 0
+        ? 0
+        : ((totalCorrect / totalQuestions) * 100).toFixed(2);
+
+    res.status(200).json({
+      totalQuizzes,
+      highestScore,
+      averageScore,
+      accuracy,
+      recentAttempts: attempts.slice(0, 2),
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
+
 
 module.exports = router;

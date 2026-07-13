@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose=require('mongoose')
 
 const answerSchema = new mongoose.Schema(
   {
@@ -11,6 +11,7 @@ const answerSchema = new mongoose.Schema(
     selectedAnswer: {
       type: String,
       required: true,
+      default:null,
     },
 
     isCorrect: {
@@ -82,4 +83,4 @@ const quizAttemptSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("QuizAttempt", quizAttemptSchema);
+module.exports= mongoose.model("QuizAttempt", quizAttemptSchema);

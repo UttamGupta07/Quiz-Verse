@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
+  const {login,logout}=useAuth();
   const [role, setRole] = useState("user");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,14 +31,17 @@ function Login() {
       });
 
       // Save token
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", role);
+      login(res.data);
+      // localStorage.setItem("token", res.data.token);
+      // localStorage.setItem("role", role);
+      // localStorage.setItem("id",res.data.user.id);
+      // localStorage.setItem("name",res.data.user.name);
 
       alert(res.data.message);
 
       // Redirect
       if (role === "user") {
-        navigate("/user");
+        navigate("/");
       } else {
         navigate("/admin");
       }
