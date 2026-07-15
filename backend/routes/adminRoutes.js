@@ -1,9 +1,21 @@
 const router = require('express').Router();
 const Admin = require('../models/Admin');
 const Question = require('../models/Question'); 
+const QuizAttempt = require('../models/QuestionAttempt'); 
+const User = require('../models/User'); 
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
 const { verifyUser } = require('../middleware/authMiddleware');
+const {
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+} = require("../controller/admin/userController/userController");
+const {
+    getAllAttempts,
+    getAttempt,deleteAttempt
+}=require("../controller/admin/quizController/quizController");
 
 router.post("/admin/signup", async (req, res) => {
     const { name, email, password } = req.body;
@@ -201,6 +213,115 @@ router.delete("/admin/questions/:id", verifyUser, async (req, res) => {
         res.status(500).json({ error: err.message });
     } 
 });
+
+router.get("/admin/dashboard",verifyUser, async (req, res) => {
+  try {
+    // Run queries in parallel
+    const [
+      totalUsers,
+      totalQuestions,
+      totalAttempts,
+      categories,
+      subCategories,
+      average,
+      mostPlayed,
+      recentAttempts,
+      recentUsers,
+    ] = await Promise.all([
+      User.countDocuments(),
+
+      Question.countDocuments(),
+
+      QuizAttempt.countDocuments(),
+
+      Question.distinct("category"),
+
+      Question.distinct("subCategory"),
+
+      QuizAttempt.aggregate([
+        {
+          $group: {
+            _id: null,
+            averageScore: { $avg: "$percentage" },
+          },
+        },
+      ]),
+
+      QuizAttempt.aggregate([
+        {
+          $group: {
+            _id: "$category",
+            total: { $sum: 1 },
+          },
+        },
+        {
+          $sort: {
+            total: -1,
+          },
+        },
+        {
+          $limit: 1,
+        },
+      ]),
+
+      QuizAttempt.find()
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .populate("userId", "name")
+        .select(
+          "userId category subCategory score percentage createdAt"
+        ),
+
+      User.find()
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select("name email createdAt"),
+    ]);
+
+    res.status(200).json({
+      totalUsers,
+      totalQuestions,
+      totalCategories: categories.length,
+      totalSubCategories: subCategories.length,
+      totalAttempts,
+
+      averageScore:
+        average.length > 0
+          ? average[0].averageScore.toFixed(2)
+          : 0,
+
+      mostPlayedCategory:
+        mostPlayed.length > 0
+          ? mostPlayed[0]._id
+          : "N/A",
+
+      recentAttempts,
+      recentUsers,
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
+);
+router.get("/admin/users", verifyUser, getAllUsers);
+
+router.get("/admin/users/:id", verifyUser, getUser);
+
+router.put("/admin/users/:id", verifyUser, updateUser);
+
+router.delete("/admin/users/:id", verifyUser, deleteUser);
+
+
+
+router.get("/admin/attempts", verifyUser, getAllAttempts);
+
+router.get("/admin/attempts/:id", verifyUser, getAttempt);
+
+router.delete("/admin/attempts/:id", verifyUser, deleteAttempt);
 
 
 module.exports = router;
