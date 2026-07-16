@@ -1,7 +1,8 @@
  import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
-import { toast } from "sonner";
+import toast from "react-hot-toast";
+
 
 const Categories = () => {
     
@@ -33,7 +34,7 @@ const Categories = () => {
 
       setCategories(res.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
 
       // Token is invalid or expired
       if (error.response?.status === 401) {

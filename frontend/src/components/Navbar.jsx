@@ -57,12 +57,14 @@ const Navbar = () => {
               >
                 Dashboard
               </Link>
+              <Link
+                to="/profile"
+                className="font-medium hover:text-indigo-600"
+              >
+                Profile
+              </Link>
 
-              <img
-                src="https://i.pravatar.cc/100"
-                alt="Profile"
-                className="w-10 h-10 rounded-full border"
-              />
+              
                <Link
                 to="/login"
                 className="font-medium text-gray-700 hover:text-indigo-600"

@@ -10,11 +10,11 @@ import {
   FaArrowLeft,
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const UserDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(id);
   
 
   const token = localStorage.getItem("token");
@@ -38,7 +38,7 @@ const UserDetails = () => {
 
       setData(res.data);
     } catch (err) {
-      console.log(err);
+      toast.error(err);
     }
   };
 

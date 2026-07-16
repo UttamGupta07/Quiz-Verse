@@ -1,6 +1,7 @@
  import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import {
   FaUsers,
   FaQuestionCircle,
@@ -16,7 +17,6 @@ const AdminDashboard = () => {
   const [dashboard, setDashboard] = useState(null);
 
   useEffect(() => {
-    console.log(token);
     
     fetchDashboard();
   }, []);
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
 
       setDashboard(res.data);
     } catch (err) {
-      console.log(err);
+      toast.error(err.response?.data?.msg || "Failed to load dashboard")
     }
   };
 

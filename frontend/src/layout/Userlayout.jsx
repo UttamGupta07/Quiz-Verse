@@ -1,21 +1,23 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Navigate, Outlet } from "react-router-dom";
+import { useNavigate,Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Userlayout = () => {
-      const { token, role } = useAuth();
+    const navigate=useNavigate()
+     
+     const role=localStorage.getItem("role");
+     useEffect(()=>{
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+             if(role=="admin"){
+        navigate("/notfound");
+        return;
+     }
 
-  if (role === "admin") {
-    return <Navigate to="/admin" replace />;
-  }
+     },[]);
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">

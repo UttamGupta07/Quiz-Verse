@@ -1,9 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import QuizCard from "../components/quizComponents/QuizCard";
+import QuizCard from "../../components/quizComponents/QuizCard";
+import toast from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 const Dashboard = () => {
+    const navigate=useNavigate()
     const [data, setData] = useState(null);
+    const {token}=useAuth();
+    useEffect(() => {
+  if (!token) {
+    toast.error("login first to access dashboard");
+    navigate("/login", { replace: true });
+    return;
+  }
+
+  loadDashboard();
+}, [token]);
 
     const loadDashboard = async () => {
         try {
@@ -20,13 +34,14 @@ const Dashboard = () => {
 
             setData(res.data);
         } catch (err) {
-            console.log(err);
+            toast.error(err);
+            
         }
     };
 
-    useEffect(() => {
-        loadDashboard();
-    }, []);
+    // useEffect(() => {
+    //     loadDashboard();
+    // }, []);
 
     if (!data) {
         return (
@@ -42,7 +57,7 @@ const Dashboard = () => {
             <div className="max-w-7xl mx-auto">
 
                 <h1 className="text-4xl font-bold mb-8">
-                    Dashboard
+                    Welcome to Dashboard,{data.name}
                 </h1>
 
                 {/* Statistics */}

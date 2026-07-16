@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import hero from "../assets/hero.png"; // Change path if needed
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
+  const {token}=useAuth();
   return (
     <>
       {/* Hero */}
@@ -25,19 +27,29 @@ function Home() {
             </p>
 
             <div className="mt-8 flex gap-4">
+               {token ? (
+  <Link
+    to="/dashboard"
+    className="bg-yellow-400 text-black px-7 py-3 rounded-xl font-bold hover:scale-105 transition"
+  >
+    Go to Dashboard
+  </Link>
+) : (
+  <Link
+    to="/signup"
+    className="bg-yellow-400 text-black px-7 py-3 rounded-xl font-bold hover:scale-105 transition"
+  >
+    Get Started
+  </Link>
+)}
               <Link
-                to="/signup"
-                className="bg-yellow-400 text-black px-7 py-3 rounded-xl font-bold hover:scale-105 transition"
-              >
-                Get Started
-              </Link>
+  to={token ? "/dashboard" : "/login"}
+  className="border-2 border-white px-7 py-3 rounded-xl hover:bg-white hover:text-indigo-700 transition"
+>
+  Explore
+</Link>
 
-              <Link
-                to="/login"
-                className="border-2 border-white px-7 py-3 rounded-xl hover:bg-white hover:text-indigo-700 transition"
-              >
-                Explore
-              </Link>
+             
             </div>
           </div>
 
@@ -164,11 +176,11 @@ function Home() {
           </p>
 
           <Link
-            to="/signup"
-            className="inline-block mt-8 bg-yellow-400 text-black px-8 py-4 rounded-xl font-bold hover:scale-105 transition"
-          >
-            Start Learning
-          </Link>
+  to={token ? "/dashboard" : "/signup"}
+  className="inline-block mt-8 bg-yellow-400 text-black px-8 py-4 rounded-xl font-bold hover:scale-105 transition"
+>
+  {token ? "Go to Dashboard" : "Start Learning"}
+</Link>
 
         </div>
       </section>

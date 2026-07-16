@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const Users = () => {
   const token = localStorage.getItem("token");
@@ -28,8 +29,7 @@ const Users = () => {
       setUsers(res.data.users);
       setFilteredUsers(res.data.users);
     } catch (err) {
-      console.log(err);
-      alert("Failed to load users");
+      toast.error("Failed to load users");
     }
   };
 
@@ -62,8 +62,7 @@ const Users = () => {
 
       fetchUsers();
     } catch (err) {
-      console.log(err);
-      alert("Unable to delete user");
+      toast.error("Unable to delete user");
     }
   };
 

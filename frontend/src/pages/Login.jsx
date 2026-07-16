@@ -2,18 +2,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-
+import toast from "react-hot-toast";
 function Login() {
    const navigate = useNavigate();
-  
-  const { token,login } = useAuth();
-   useEffect(() => {
-    if (token) {
-      navigate("/dashboard");
-    }
-  }, [token, navigate]);
-  
-
+   const {login}=useAuth();
   const [role, setRole] = useState("user");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +16,7 @@ function Login() {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
@@ -44,7 +36,7 @@ function Login() {
       // Save authentication data
       login(res.data, role);
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       // Redirect
       if (role === "admin") {
@@ -53,11 +45,10 @@ function Login() {
         navigate("/");
       }
     } catch (err) {
-      alert(
-        err.response?.data?.error ||
+       toast.error(err.response?.data?.error ||
           err.response?.data?.message ||
-          "Login Failed"
-      );
+          "Login Failed")
+      
     }
   };
 

@@ -1,8 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState,useEffect } from "react";
+import { Link ,useNavigate} from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 function Signup() {
+
+   const navigate = useNavigate();
+  
+  const { token } = useAuth();
+   useEffect(() => {
+    if (token) {
+      navigate("/categories");
+    }
+  }, [token, navigate]);
+  
   const [role, setRole] = useState("user");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,12 +25,12 @@ function Signup() {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -34,7 +46,7 @@ function Signup() {
         password,
       });
 
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       // Clear form
       setName("");
@@ -43,7 +55,7 @@ function Signup() {
       setConfirmPassword("");
       setRole("user");
     } catch (err) {
-      alert(
+      toast.error(
         err.response?.data?.error ||
           err.response?.data?.message ||
           "Something went wrong"

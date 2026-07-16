@@ -1,6 +1,7 @@
  import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
   Trophy,
   CheckCircle,
@@ -40,7 +41,7 @@ const Result = () => {
       // setResult(res.data.quiz);
 
     } catch (err) {
-      console.log(err);
+      toast.error(err);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
   FaArrowLeft,
   FaUser,
@@ -33,12 +34,11 @@ const AttemptDetails = () => {
           },
         }
       );
-      console.log(res.data);
       
 
       setAttempt(res.data);
     } catch (err) {
-      console.log(err);
+      toast.error(err);
     }
   };
 

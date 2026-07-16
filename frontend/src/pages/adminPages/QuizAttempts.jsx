@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const QuizAttempts = () => {
   const navigate = useNavigate();
@@ -29,8 +30,7 @@ const QuizAttempts = () => {
 
       setAttempts(res.data.attempts);
     } catch (err) {
-      console.log(err);
-      alert("Unable to fetch quiz attempts");
+      toast.error("Unable to fetch quiz attempts");
     }
   };
 
@@ -53,8 +53,8 @@ const QuizAttempts = () => {
 
       fetchAttempts();
     } catch (err) {
-      console.log(err);
-      alert("Unable to delete attempt");
+      
+      toast.error("Unable to delete attempt");
     }
   };
 

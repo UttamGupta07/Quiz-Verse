@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Review = () => {
   const { id } = useParams();
@@ -27,10 +28,10 @@ const Review = () => {
 
         setAnswers(res.data.review.answers);
       } catch (err) {
-        console.log(err);
+        toast.error(err);
 
         if (err.response?.status === 401) {
-          alert("Please login first.");
+          toast.error("Please login first.");
           navigate("/login");
         }
       } finally {
