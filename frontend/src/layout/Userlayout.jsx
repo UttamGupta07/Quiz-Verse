@@ -13,7 +13,7 @@ const Userlayout = () => {
      useEffect(()=>{
 
              if(role=="admin"){
-        navigate("/notfound");
+        navigate("/admin");
         return;
      }
 

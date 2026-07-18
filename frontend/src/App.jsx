@@ -20,6 +20,9 @@ import Adminlayout from './layout/Adminlayout.jsx'
 import AdminDashboard from './pages/adminPages/AdminDashboard.jsx'
 import { Toaster } from "react-hot-toast";
 import UserProfile from './pages/userPages/UserProfile.jsx'
+import Questions from './pages/adminPages/Questions.jsx'
+import EditQuestion from './pages/adminPages/EditQuestion.jsx'
+import About from './pages/About.jsx'
 const App = () => {
   return (
 
@@ -46,6 +49,7 @@ const App = () => {
           
           <Route path="/review/:id" element={<Review />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/about" element={<About />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route
             path="/result/:id"
@@ -68,6 +72,12 @@ const App = () => {
         <Route path="/admin/users/:id" element={<UserDetails />} />
         <Route path="/admin/attempts/" element={<QuizAttempts />} />
         <Route path="/admin/attempts/:id" element={<AttemptDetails />} />
+        <Route path="/admin/questions" element={<Questions />} />
+        <Route
+    path="/admin/questions/edit/:id"
+    element={<EditQuestion />}
+/>
+
 
          
       </Route>
