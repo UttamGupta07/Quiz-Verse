@@ -4,7 +4,7 @@ import Home from './pages/Home.jsx'
 import Navbar from './components/Navbar.jsx'
 import Userlayout from './layout/Userlayout.jsx'
 import Categories from './pages/Categories.jsx'
-import SubCategories from './pages/Subcategories.jsx'
+import SubCategories from './pages/SubCategories.jsx'
 import Login from "./pages/Login.jsx";
 import Signup from './pages/Signup.jsx'
 import Quiz from './pages/Quiz.jsx'
