@@ -1,4 +1,4 @@
- import { NavLink, Link } from "react-router-dom";
+ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -6,8 +6,9 @@ import { useAuth } from "../context/AuthContext";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { token, logout } = useAuth();
+  const navigate = useNavigate();
 
-  const isLoggedIn = token; // Replace with your auth state
+  const isLoggedIn = !!token;
 
   const navItem = ({ isActive }) =>
     `font-medium transition ${
@@ -16,20 +17,28 @@ const Navbar = () => {
         : "text-gray-600 hover:text-indigo-600"
     }`;
 
-  return (
-    <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto h-20 px-6 flex items-center justify-between">
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate("/login");
+  };
 
+  const closeMenu = () => setOpen(false);
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white shadow-sm">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link
           to="/"
           className="text-3xl font-extrabold text-indigo-600"
+          onClick={closeMenu}
         >
           QuizMaster
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-10">
+        <nav className="hidden items-center gap-8 lg:flex">
           <NavLink to="/" className={navItem}>
             Home
           </NavLink>
@@ -47,47 +56,34 @@ const Navbar = () => {
           </NavLink>
         </nav>
 
-        {/* Right Side */}
-        <div className="hidden lg:flex items-center gap-4">
+        {/* Desktop Right Side */}
+        <div className="hidden items-center gap-5 lg:flex">
           {isLoggedIn ? (
             <>
-              <Link
-                to="/dashboard"
-                className="font-medium hover:text-indigo-600"
-              >
+              <NavLink to="/dashboard" className={navItem}>
                 Dashboard
-              </Link>
-              <Link
-                to="/profile"
-                className="font-medium hover:text-indigo-600"
-              >
-                Profile
-              </Link>
+              </NavLink>
 
-              
-               <Link
-                to="/login"
-                className="font-medium text-gray-700 hover:text-indigo-600"
-                onClick={()=>{logout()}}
-                
-                
+              <NavLink to="/profile" className={navItem}>
+                Profile
+              </NavLink>
+
+              <button
+                onClick={handleLogout}
+                className="font-medium text-red-600 transition hover:text-red-700"
               >
                 Logout
-              </Link>
+              </button>
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="font-medium text-gray-700 hover:text-indigo-600"
-                
-              >
+              <NavLink to="/login" className={navItem}>
                 Login
-              </Link>
+              </NavLink>
 
               <Link
                 to="/signup"
-                className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition"
+                className="rounded-lg bg-indigo-600 px-5 py-2 text-white transition hover:bg-indigo-700"
               >
                 Sign Up
               </Link>
@@ -95,10 +91,11 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Button */}
+        {/* Mobile Menu Button */}
         <button
-          className="lg:hidden"
           onClick={() => setOpen(!open)}
+          className="rounded-md p-2 lg:hidden"
+          aria-label="Toggle Menu"
         >
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -106,11 +103,11 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="lg:hidden bg-white border-t">
-
+        <div className="border-t bg-white lg:hidden">
           <NavLink
             to="/"
             className="block px-6 py-4 hover:bg-gray-100"
+            onClick={closeMenu}
           >
             Home
           </NavLink>
@@ -118,6 +115,7 @@ const Navbar = () => {
           <NavLink
             to="/categories"
             className="block px-6 py-4 hover:bg-gray-100"
+            onClick={closeMenu}
           >
             Categories
           </NavLink>
@@ -125,6 +123,7 @@ const Navbar = () => {
           <NavLink
             to="/leaderboard"
             className="block px-6 py-4 hover:bg-gray-100"
+            onClick={closeMenu}
           >
             Leaderboard
           </NavLink>
@@ -132,28 +131,57 @@ const Navbar = () => {
           <NavLink
             to="/about"
             className="block px-6 py-4 hover:bg-gray-100"
+            onClick={closeMenu}
           >
             About
           </NavLink>
 
-          {!isLoggedIn && (
+          <hr />
+
+          {isLoggedIn ? (
+            <>
+              <NavLink
+                to="/dashboard"
+                className="block px-6 py-4 hover:bg-gray-100"
+                onClick={closeMenu}
+              >
+                Dashboard
+              </NavLink>
+
+              <NavLink
+                to="/profile"
+                className="block px-6 py-4 hover:bg-gray-100"
+                onClick={closeMenu}
+              >
+                Profile
+              </NavLink>
+
+              <button
+                onClick={handleLogout}
+                className="block w-full px-6 py-4 text-left font-medium text-red-600 hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
             <>
               <NavLink
                 to="/login"
                 className="block px-6 py-4 hover:bg-gray-100"
+                onClick={closeMenu}
               >
                 Login
               </NavLink>
 
               <NavLink
-                to="/register"
-                className="block px-6 py-4 bg-indigo-600 text-white"
+                to="/signup"
+                className="block bg-indigo-600 px-6 py-4 text-white hover:bg-indigo-700"
+                onClick={closeMenu}
               >
                 Sign Up
               </NavLink>
             </>
           )}
-
         </div>
       )}
     </header>
