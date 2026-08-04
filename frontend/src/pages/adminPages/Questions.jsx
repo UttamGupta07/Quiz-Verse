@@ -1,5 +1,5 @@
  import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -32,14 +32,8 @@ const [deleteId, setDeleteId] = useState(null);
 
   const deleteQuestion = async () => {
   try {
-    await axios.delete(
-      `http://localhost:3030/admin/questions/${deleteId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    await axiosInstance.delete(
+      `/admin/questions/${deleteId}`);
 
     toast.success("Question Deleted");
 
@@ -72,8 +66,8 @@ const [deleteId, setDeleteId] = useState(null);
     try {
       setLoading(true);
 
-      const res = await axios.get(
-        "http://localhost:3030/admin/questions",
+      const res = await axiosInstance.get(
+        "/admin/questions",
         {
           params: {
             page,
@@ -82,11 +76,7 @@ const [deleteId, setDeleteId] = useState(null);
             category: filters.category,
             subCategory: filters.subCategory,
             difficulty: filters.difficulty,
-          },
-
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          }
         }
       );
 

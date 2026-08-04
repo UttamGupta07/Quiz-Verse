@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -19,12 +19,8 @@ const SubCategories = () => {
 
   const getSubCategories = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3030/quiz/categories/${category}/subcategories`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      const res = await axiosInstance.get(
+        `/quiz/categories/${category}/subcategories` 
       );
 
 

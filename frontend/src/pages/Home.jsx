@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import hero from "../assets/hero.png"; // Change path if needed
 import { useAuth } from "../context/AuthContext";
 
+
 function Home() {
   const {token}=useAuth();
   return (

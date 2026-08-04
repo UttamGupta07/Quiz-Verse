@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import QuizCard from "../../components/quizComponents/QuizCard";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
@@ -23,14 +23,8 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem("token");
 
-            const res = await axios.get(
-                "http://localhost:3030/user/dashboard",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const res = await axiosInstance.get(
+                "/user/dashboard");
 
             setData(res.data);
         } catch (err) {
@@ -38,11 +32,6 @@ const Dashboard = () => {
             
         }
     };
-
-    // useEffect(() => {
-    //     loadDashboard();
-    // }, []);
-
     if (!data) {
         return (
             <div className="min-h-screen flex justify-center items-center">

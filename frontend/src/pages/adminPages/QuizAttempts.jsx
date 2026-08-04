@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -19,13 +19,8 @@ const QuizAttempts = () => {
 
   const fetchAttempts = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3030/admin/attempts",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        "/admin/attempts"
       );
 
       setAttempts(res.data.attempts);
@@ -42,13 +37,8 @@ const QuizAttempts = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:3030/admin/attempts/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      await axiosInstance.delete(
+        `/admin/attempts/${id}` 
       );
 
       fetchAttempts();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { FaEye, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 
@@ -17,14 +17,8 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3030/admin/users",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axiosInstance.get(
+        "/admin/users");
 
       setUsers(res.data.users);
       setFilteredUsers(res.data.users);
@@ -51,13 +45,8 @@ const Users = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:3030/admin/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      await axiosInstance.delete(
+        `/admin/users/${id}`
       );
 
       fetchUsers();

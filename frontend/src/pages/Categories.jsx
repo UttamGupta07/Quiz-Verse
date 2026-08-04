@@ -1,5 +1,5 @@
  import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
 
@@ -23,13 +23,8 @@ const Categories = () => {
     }
 
     try {
-      const res = await axios.get(
-        "http://localhost:3030/quiz/categories",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        "/quiz/categories" 
       );
 
       setCategories(res.data);

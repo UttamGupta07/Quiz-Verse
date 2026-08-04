@@ -1,5 +1,5 @@
  import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance"
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
@@ -16,8 +16,7 @@ const Result = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
-
-  // If navigated from Quiz page, state will be available
+  // If navigated from Quiz page, state will be available  
   const [result, setResult] = useState(location.state || null);
   const [loading, setLoading] = useState(false);
 
@@ -27,13 +26,8 @@ const Result = () => {
 
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        `http://localhost:3030/quiz/result/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/quiz/result/${id}`
       );
 
       // Change this if your backend returns { quiz: ... }
@@ -53,7 +47,6 @@ const Result = () => {
       loadResult();
     }
   }, [id]);
-
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center text-2xl font-semibold">
@@ -79,7 +72,7 @@ const Result = () => {
     percentage,
     timeTaken,
   } = result;
-
+  
   const skipped = totalQuestions - correctAnswers - wrongAnswers;
 
   const minutes = Math.floor(timeTaken / 60);

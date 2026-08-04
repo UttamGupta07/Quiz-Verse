@@ -1,4 +1,4 @@
- import axios from "axios";
+ import axiosInstance from "../utils/axiosInstance"
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -41,9 +41,9 @@ const Quiz = () => {
       try {
         setLoading(true);
 
-        const url = `http://localhost:3030/quiz/random?category=${quizPara.category}&subCategory=${quizPara.subCategory}&limit=${quizPara.noOfQuestions}&difficulty=${quizPara.difficulty}`;
+        const url = `/quiz/random?category=${quizPara.category}&subCategory=${quizPara.subCategory}&limit=${quizPara.noOfQuestions}&difficulty=${quizPara.difficulty}`;
 
-        const res = await axios.get(url);
+        const res = await axiosInstance.get(url);
 
         setQuestions(res.data.questions || []);
       } catch (err) {
@@ -116,9 +116,6 @@ const Quiz = () => {
     }));
   };
 
-  // ==============================
-  // Navigation
-  // ==============================
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
@@ -149,15 +146,13 @@ const Quiz = () => {
         timeTaken: 1800 - timeLeft,
         answers,
       };
+      console.log(quizData);
+      
 
-      const res = await axios.post(
-        "http://localhost:3030/quiz/submit",
-        quizData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.post(
+        "/quiz/submit",
+        quizData
+         
       );
 
       toast.success("Quiz submitted successfully!");

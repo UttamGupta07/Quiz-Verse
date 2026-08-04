@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance"
 import toast from "react-hot-toast";
 
 const Review = () => {
@@ -15,8 +15,8 @@ const Review = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get(
-          `http://localhost:3030/quiz/review/${id}`,
+        const res = await axiosInstance.get(
+          `/quiz/review/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

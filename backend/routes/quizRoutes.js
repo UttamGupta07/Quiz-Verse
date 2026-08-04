@@ -99,6 +99,8 @@ router.post("/quiz/submit", verifyUser, async (req, res) => {
             timeTaken,
             answers,
         } = req.body;
+        console.log(answers);
+        
 
         // Get all attempted question ids
         const questionIds = Object.keys(answers);
@@ -163,7 +165,7 @@ router.post("/quiz/submit", verifyUser, async (req, res) => {
             message: "Quiz submitted successfully.",
 
             result: {
-                attemptId: quizAttempt._id,
+                _id:quizAttempt._id,
                 score,
                 totalQuestions,
                 correctAnswers,
@@ -222,7 +224,7 @@ router.get(
             const quiz = await QuizAttempt.findOne({
                 _id: req.params.id,
                 userId: req.user.id
-            });
+            }).select("-answers");
 
             if (!quiz) {
                 return res.status(404).json({

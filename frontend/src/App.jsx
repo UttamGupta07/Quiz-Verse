@@ -76,10 +76,7 @@ const App = () => {
         <Route
     path="/admin/questions/edit/:id"
     element={<EditQuestion />}
-/>
-
-
-         
+/>    
       </Route>
               <Route path="*" element={<NotFound />} />
 

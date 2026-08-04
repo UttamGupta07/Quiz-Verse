@@ -6,6 +6,8 @@ const User = require('../models/User');
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
 const { verifyUser } = require('../middleware/authMiddleware');
+
+ 
 const {
   getAllUsers,
   getUser,
@@ -40,8 +42,8 @@ router.post("/admin/questions",verifyUser,addQuestion);
 router.get("/admin/questions", verifyUser,getAllQuestions );
 router.get("/admin/questions/:id", verifyUser,singleQuestion);
 router.put("/admin/questions/:id", verifyUser,updateQuestion);
-
 router.delete("/admin/questions/:id",verifyUser,deleteQuestion);
+
 
 router.get("/admin/dashboard",verifyUser,dashboard);
 router.get("/admin/users", verifyUser, getAllUsers);
@@ -59,6 +61,8 @@ router.get("/admin/attempts", verifyUser, getAllAttempts);
 router.get("/admin/attempts/:id", verifyUser, getAttempt);
 
 router.delete("/admin/attempts/:id", verifyUser, deleteAttempt);
+
+
 
 
 module.exports = router;

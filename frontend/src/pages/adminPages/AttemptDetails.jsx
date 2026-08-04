@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
@@ -26,14 +26,8 @@ const AttemptDetails = () => {
     try {
       console.log(id);
       
-      const res = await axios.get(
-        `http://localhost:3030/admin/attempts/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axiosInstance.get(
+        `/admin/attempts/${id}`);
       
 
       setAttempt(res.data);

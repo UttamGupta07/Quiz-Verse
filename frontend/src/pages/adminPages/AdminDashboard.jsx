@@ -1,5 +1,5 @@
  import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import {
@@ -23,11 +23,7 @@ const AdminDashboard = () => {
 
   const fetchDashboard = async () => {
     try {
-      const res = await  axios.get("http://localhost:3030/admin/dashboard", {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+      const res = await  axiosInstance.get("/admin/dashboard");
 
       setDashboard(res.data);
     } catch (err) {

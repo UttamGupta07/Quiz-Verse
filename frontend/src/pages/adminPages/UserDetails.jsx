@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import {
   FaUser,
   FaEnvelope,
@@ -27,14 +27,8 @@ const UserDetails = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3030/admin/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axiosInstance.get(
+        `/admin/users/${id}` );
 
       setData(res.data);
     } catch (err) {

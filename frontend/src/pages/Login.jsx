@@ -1,6 +1,6 @@
  import { useState,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 function Login() {
@@ -22,11 +22,11 @@ function Login() {
 
     const url =
       role === "user"
-        ? "http://localhost:3030/user/login"
-        : "http://localhost:3030/admin/login";
+        ? "/user/login"
+        : "/admin/login";
 
     try {
-      const res = await axios.post(url, {
+      const res = await axiosInstance.post(url, {
         email,
         password,
       });

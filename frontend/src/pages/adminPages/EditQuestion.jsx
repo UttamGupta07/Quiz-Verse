@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -27,13 +27,8 @@ const EditQuestion = () => {
 
   const fetchQuestion = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3030/admin/questions/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/admin/questions/${id}`
       );
 
       setFormData(res.data.question);
@@ -66,14 +61,9 @@ const EditQuestion = () => {
     e.preventDefault();
 
     try {
-      await axios.put(
-        `http://localhost:3030/admin/questions/${id}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      await axiosInstance.put(
+        `/admin/questions/${id}`,
+        formData
       );
 
       toast.success("Question Updated Successfully");

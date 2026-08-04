@@ -1,7 +1,7 @@
  import React, { useEffect, useState } from "react";
  import { useNavigate } from "react-router-dom";
  import toast from "react-hot-toast";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
 import {
   User,
@@ -32,13 +32,8 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3030/user/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        "/user/profile"
       );
 
       setProfile(res.data);
