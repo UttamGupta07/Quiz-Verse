@@ -23,11 +23,12 @@ import UserProfile from './pages/userPages/UserProfile.jsx'
 import Questions from './pages/adminPages/Questions.jsx'
 import EditQuestion from './pages/adminPages/EditQuestion.jsx'
 import About from './pages/About.jsx'
+import AdminUploadQuestions from './pages/adminPages/AdminUploadQuestions.jsx'
 const App = () => {
   return (
 
     <BrowserRouter>
-        <Toaster
+      <Toaster
         position="top-right"
         reverseOrder={false}
         toastOptions={{
@@ -44,9 +45,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/categories/:category" element={<SubCategories />} />
-           <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-          
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
           <Route path="/review/:id" element={<Review />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
@@ -54,33 +55,38 @@ const App = () => {
           <Route
             path="/result/:id"
             element={<Result />}
-            
+
           />
-        
+
 
         </Route>
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/result" element={<Result />} />
-       
 
 
 
 
-            <Route element={<Adminlayout />}>
-        <Route  path="/admin" element={<AdminDashboard />} />
-        <Route  path="/admin/users" element={<Users />} />
-        <Route path="/admin/users/:id" element={<UserDetails />} />
-        <Route path="/admin/attempts/" element={<QuizAttempts />} />
-        <Route path="/admin/attempts/:id" element={<AttemptDetails />} />
-        <Route path="/admin/questions" element={<Questions />} />
-        <Route
-    path="/admin/questions/edit/:id"
-    element={<EditQuestion />}
-/>    
-      </Route>
-              <Route path="*" element={<NotFound />} />
 
-        
+        <Route element={<Adminlayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<Users />} />
+          <Route path="/admin/users/:id" element={<UserDetails />} />
+          <Route path="/admin/attempts/" element={<QuizAttempts />} />
+          <Route path="/admin/attempts/:id" element={<AttemptDetails />} />
+          <Route path="/admin/questions" element={<Questions />} />
+          <Route
+            path="/admin/questions/edit/:id"
+            element={<EditQuestion />}
+          />
+          <Route
+            path="/admin/upload"
+            element={<AdminUploadQuestions />}
+          />
+
+        </Route>
+        <Route path="*" element={<NotFound />} />
+
+
 
 
       </Routes>

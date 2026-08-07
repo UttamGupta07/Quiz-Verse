@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const Admin = require('../models/Admin');
-const Question = require('../models/Question'); 
+// const Question = require('../models/Question'); 
 const QuizAttempt = require('../models/QuestionAttempt'); 
 const User = require('../models/User'); 
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
 const { verifyUser } = require('../middleware/authMiddleware');
+const{upload,uploadFile}=require("../utils/uploadFile");
 
  
 const {
@@ -62,9 +63,7 @@ router.get("/admin/attempts/:id", verifyUser, getAttempt);
 
 router.delete("/admin/attempts/:id", verifyUser, deleteAttempt);
 
-
-
-
+router.post("/admin/upload-question",verifyUser,upload.single("file"),uploadFile);
 module.exports = router;
 
 

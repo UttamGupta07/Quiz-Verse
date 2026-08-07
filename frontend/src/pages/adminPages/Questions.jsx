@@ -109,7 +109,7 @@ const [deleteId, setDeleteId] = useState(null);
         </h1>
 
         <button
-          onClick={() => navigate("/admin/questions/add")}
+          onClick={() => navigate("/admin/upload")}
           className="bg-blue-600 text-white px-5 py-2 rounded-lg"
         >
           + Add Question
