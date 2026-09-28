@@ -1,7 +1,7 @@
  const multer = require("multer");
 const fs = require("fs");
 const csv = require("csv-parser");
-const Question = require("../models/question");
+const Question = require("../models/Question");
 
 const upload = multer({
     dest: "uploads/",
